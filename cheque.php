@@ -54,7 +54,7 @@ class Cheque extends PaymentModule
 			$this->address = $config['CHEQUE_ADDRESS'];
 
 		$this->bootstrap = true;
-		parent::__construct();	
+		parent::__construct();
 
 		$this->displayName = $this->l('Payments by check');
 		$this->description = $this->l('This module allows you to accept payments by check.');
@@ -64,7 +64,7 @@ class Cheque extends PaymentModule
 			$this->warning = $this->l('The "Pay to the order of" and "Address" fields must be configured before using this module.');
 		if (!count(Currency::checkPaymentCurrencies($this->id)))
 			$this->warning = $this->l('No currency has been set for this module.');
-	
+
 		$this->extra_mail_vars = array(
 											'{cheque_name}' => Configuration::get('CHEQUE_NAME'),
 											'{cheque_address}' => Configuration::get('CHEQUE_ADDRESS'),
@@ -181,7 +181,7 @@ class Cheque extends PaymentModule
 					return true;
 		return false;
 	}
-	
+
 	public function renderForm()
 	{
 		$fields_form = array(
@@ -210,10 +210,10 @@ class Cheque extends PaymentModule
 				)
 			),
 		);
-		
+
 		$helper = new HelperForm();
 		$helper->show_toolbar = false;
-		$helper->table =  $this->table;
+		$helper->table = $this->table;
 		$lang = new Language((int)Configuration::get('PS_LANG_DEFAULT'));
 		$helper->default_form_language = $lang->id;
 		$helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
@@ -231,7 +231,7 @@ class Cheque extends PaymentModule
 
 		return $helper->generateForm(array($fields_form));
 	}
-	
+
 	public function getConfigFieldsValues()
 	{
 		return array(
