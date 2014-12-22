@@ -43,6 +43,7 @@ class Cheque extends PaymentModule
 		$this->version = '2.5.4';
 		$this->author = 'PrestaShop';
 		$this->controllers = array('payment', 'validation');
+		$this->is_eu_compatible = 1;
 
 		$this->currencies = true;
 		$this->currencies_mode = 'checkbox';
