@@ -160,13 +160,13 @@ class Cheque extends PaymentModule
 		{
 			$payment_options = new PaymentOption();
 			$payment_options->cta_text = $this->l('Pay by Check');
-			$payment_options->logo = Media::getMediaPath(dirname(__FILE__).'/cheque.png');
+			$payment_options->logo = Media::getMediaPath(dirname(__FILE__).'/cheque.jpg');
 			$payment_options->action = $this->context->link->getModuleLink($this->name, 'validation', array(), true);
 		}
 		else
 			$payment_options = array(
 			'cta_text' => $this->l('Pay by Check'),
-			'logo' => Media::getMediaPath(dirname(__FILE__).'/cheque.png'),
+			'logo' => Media::getMediaPath(dirname(__FILE__).'/cheque.jpg'),
 			'action' => $this->context->link->getModuleLink($this->name, 'validation', array(), true)
 		);
 
