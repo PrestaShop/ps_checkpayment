@@ -75,8 +75,7 @@ class Cheque extends PaymentModule
 
 	public function install()
 	{
-		if (!parent::install() || !$this->registerHook('payment') || ! $this->registerHook('displayPaymentEU') || !$this->registerHook('paymentReturn')
-		|| !$this->registerHook('advancedPaymentApi'))
+		if (!parent::install() || !$this->registerHook('payment') || ! $this->registerHook('displayPaymentEU') || !$this->registerHook('paymentReturn'))
 			return false;
 		return true;
 	}
@@ -156,27 +155,13 @@ class Cheque extends PaymentModule
 		if (!$this->checkCurrency($params['cart']))
 			return;
 
-		if (isset($params['adv_pay_api']) && $params['adv_pay_api'] === true)
-		{
-			$payment_options = new PaymentOption();
-			$payment_options->cta_text = $this->l('Pay by Check');
-			$payment_options->logo = Media::getMediaPath(dirname(__FILE__).'/cheque.jpg');
-			$payment_options->action = $this->context->link->getModuleLink($this->name, 'validation', array(), true);
-		}
-		else
-			$payment_options = array(
+		$payment_options = array(
 			'cta_text' => $this->l('Pay by Check'),
 			'logo' => Media::getMediaPath(dirname(__FILE__).'/cheque.jpg'),
 			'action' => $this->context->link->getModuleLink($this->name, 'validation', array(), true)
 		);
 
 		return $payment_options;
-	}
-
-	public function hookAdvancedPaymentApi($params)
-	{
-		$params['adv_pay_api'] = true;
-		return $this->hookDisplayPaymentEU($params);
 	}
 
 	public function hookPaymentReturn($params)
