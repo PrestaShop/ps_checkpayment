@@ -29,8 +29,5 @@ if (!defined('_PS_VERSION_'))
 
 function upgrade_module_2_5_7($module)
 {
-	if (!$module->registerHook('advancedPaymentApi'))
-		return false;
-
 	return true;
 }

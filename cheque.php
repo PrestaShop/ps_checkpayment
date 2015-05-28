@@ -1,6 +1,6 @@
 <?php
 /*
-* 2007-2014 PrestaShop
+* 2007-2015 PrestaShop
 *
 * NOTICE OF LICENSE
 *
@@ -19,7 +19,7 @@
 * needs please refer to http://www.prestashop.com for more information.
 *
 *  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2014 PrestaShop SA
+*  @copyright  2007-2015 PrestaShop SA
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
@@ -40,7 +40,7 @@ class Cheque extends PaymentModule
 	{
 		$this->name = 'cheque';
 		$this->tab = 'payments_gateways';
-		$this->version = '2.5.6';
+		$this->version = '2.5.7';
 		$this->author = 'PrestaShop';
 		$this->controllers = array('payment', 'validation');
 		$this->is_eu_compatible = 1;
@@ -75,8 +75,7 @@ class Cheque extends PaymentModule
 
 	public function install()
 	{
-		if (!parent::install() || !$this->registerHook('payment') || ! $this->registerHook('displayPaymentEU') || !$this->registerHook('paymentReturn')
-		|| !$this->registerHook('advancedPaymentApi'))
+		if (!parent::install() || !$this->registerHook('payment') || ! $this->registerHook('displayPaymentEU') || !$this->registerHook('paymentReturn'))
 			return false;
 		return true;
 	}
@@ -156,27 +155,13 @@ class Cheque extends PaymentModule
 		if (!$this->checkCurrency($params['cart']))
 			return;
 
-		if (isset($params['adv_pay_api']) && $params['adv_pay_api'] === true)
-		{
-			$payment_options = new PaymentOption();
-			$payment_options->cta_text = $this->l('Pay by Check');
-			$payment_options->logo = Media::getMediaPath(dirname(__FILE__).'/cheque.jpg');
-			$payment_options->action = $this->context->link->getModuleLink($this->name, 'validation', array(), true);
-		}
-		else
-			$payment_options = array(
+		$payment_options = array(
 			'cta_text' => $this->l('Pay by Check'),
 			'logo' => Media::getMediaPath(dirname(__FILE__).'/cheque.jpg'),
 			'action' => $this->context->link->getModuleLink($this->name, 'validation', array(), true)
 		);
 
 		return $payment_options;
-	}
-
-	public function hookAdvancedPaymentApi($params)
-	{
-		$params['adv_pay_api'] = true;
-		return $this->hookDisplayPaymentEU($params);
 	}
 
 	public function hookPaymentReturn($params)
