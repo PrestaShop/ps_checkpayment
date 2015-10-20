@@ -157,7 +157,7 @@ class Cheque extends PaymentModule
 
 		$payment_options = array(
 			'cta_text' => $this->l('Pay by Check'),
-			'logo' => Media::getMediaPath(dirname(__FILE__).'/cheque.jpg'),
+			'logo' => Media::getMediaPath(_PS_MODULE_DIR_.$this->name.'/cheque.jpg'),
 			'action' => $this->context->link->getModuleLink($this->name, 'validation', array(), true)
 		);
 
