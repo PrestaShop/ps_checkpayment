@@ -24,6 +24,8 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
+use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -41,10 +43,9 @@ class cheque extends PaymentModule
     {
         $this->name = 'cheque';
         $this->tab = 'payments_gateways';
-        $this->version = '2.7.1';
+        $this->version = '3.0.0';
         $this->author = 'PrestaShop';
         $this->controllers = array('payment', 'validation');
-        $this->is_eu_compatible = 1;
 
         $this->currencies = true;
         $this->currencies_mode = 'checkbox';
@@ -63,6 +64,7 @@ class cheque extends PaymentModule
         $this->displayName = $this->l('Payments by check');
         $this->description = $this->l('This module allows you to accept payments by check.');
         $this->confirmUninstall = $this->l('Are you sure you want to delete these details?');
+        $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
 
         if ((!isset($this->chequeName) || !isset($this->address) || empty($this->chequeName) || empty($this->address))) {
             $this->warning = $this->l('The "Pay to the order of" and "Address" fields must be configured before using this module.');
@@ -81,8 +83,7 @@ class cheque extends PaymentModule
     public function install()
     {
         return parent::install()
-            && $this->registerHook('payment')
-            && $this->registerHook('displayPaymentEU')
+            && $this->registerHook('paymentOptions')
             && $this->registerHook('paymentReturn')
         ;
     }
@@ -141,7 +142,7 @@ class cheque extends PaymentModule
         return $this->_html;
     }
 
-    public function hookPayment($params)
+    public function hookPaymentOptions($params)
     {
         if (!$this->active) {
             return;
@@ -150,30 +151,16 @@ class cheque extends PaymentModule
             return;
         }
 
-        $this->smarty->assign(array(
-            'this_path' => $this->_path,
-            'this_path_cheque' => $this->_path,
-            'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/'
-        ));
-        return $this->display(__FILE__, 'payment.tpl');
-    }
-
-    public function hookDisplayPaymentEU($params)
-    {
-        if (!$this->active) {
-            return;
-        }
-        if (!$this->checkCurrency($params['cart'])) {
-            return;
-        }
-
-        $payment_options = array(
-            'cta_text' => $this->l('Pay by Check'),
-            'logo' => Media::getMediaPath(_PS_MODULE_DIR_.$this->name.'/cheque.jpg'),
-            'action' => $this->context->link->getModuleLink($this->name, 'validation', array(), true)
+        $this->context->smarty->assign(
+            $this->getTemplateVars()
         );
 
-        return $payment_options;
+        $newOption = new PaymentOption();
+        $newOption->setCallToActionText($this->l('Pay by Check'))
+                ->setAction($this->context->link->getModuleLink($this->name, 'validation', array(), true))
+                ->setAdditionalInformation($this->context->smarty->fetch('module:cheque/views/templates/front/payment_infos.tpl'));
+
+        return [$newOption];
     }
 
     public function hookPaymentReturn($params)
@@ -266,5 +253,30 @@ class cheque extends PaymentModule
             'CHEQUE_NAME' => Tools::getValue('CHEQUE_NAME', Configuration::get('CHEQUE_NAME')),
             'CHEQUE_ADDRESS' => Tools::getValue('CHEQUE_ADDRESS', Configuration::get('CHEQUE_ADDRESS')),
         );
+    }
+
+    public function getTemplateVars()
+    {
+        $cart = $this->context->cart;
+        $total = sprintf(
+            $this->l('%1$s (tax incl.)'),
+            Tools::displayPrice($cart->getOrderTotal(true, Cart::BOTH))
+        );
+
+        $chequeOrder = Configuration::get('CHEQUE_NAME');
+        if (!$chequeOrder) {
+            $chequeOrder = '___________';
+        }
+
+        $chequeAddress = Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'));
+        if (!$chequeAddress) {
+            $chequeAddress = '___________';
+        }
+
+        return [
+            'chequeTotal' => $total,
+            'chequeOrder' => $chequeOrder,
+            'chequeAddress' => $chequeAddress,
+        ];
     }
 }

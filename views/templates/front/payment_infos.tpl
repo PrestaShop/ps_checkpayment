@@ -23,9 +23,15 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 
-<p class="payment_module">
-	<a href="{$link->getModuleLink('cheque', 'payment', [], true)|escape:'html'}">
-		<img src="{$this_path_cheque}cheque.jpg" alt="{l s='Pay by check' mod='cheque'}" />
-		{l s='Pay by check' mod='cheque'} {l s='(order processing will be longer)' mod='cheque'}
-	</a>
-</p>
+<section>
+  <p>{l s='Please send us your check following these rules:' mod='bankwire'}
+    <dl>
+      <dt>{l s='Amount' mod='cheque'}</dt>
+      <dd>{$chequeTotal}</dd>
+      <dt>{l s='Cheque order' mod='cheque'}</dt>
+      <dd>{$chequeOrder}</dd>
+      <dt>{l s='Send your check at this address' mod='cheque'}</dt>
+      <dd>{$chequeAddress nofilter}</dd>
+    </dl>
+  </p>
+</section>
