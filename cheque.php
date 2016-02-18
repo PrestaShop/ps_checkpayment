@@ -72,26 +72,27 @@ class cheque extends PaymentModule
         }
 
         $this->extra_mail_vars = array(
-                                            '{cheque_name}' => Configuration::get('CHEQUE_NAME'),
-                                            '{cheque_address}' => Configuration::get('CHEQUE_ADDRESS'),
-                                            '{cheque_address_html}' => str_replace("\n", '<br />', Configuration::get('CHEQUE_ADDRESS'))
-                                            );
+                                    '{cheque_name}' => Configuration::get('CHEQUE_NAME'),
+                                    '{cheque_address}' => Configuration::get('CHEQUE_ADDRESS'),
+                                    '{cheque_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'))
+                                );
     }
 
     public function install()
     {
-        if (!parent::install() || !$this->registerHook('payment') || ! $this->registerHook('displayPaymentEU') || !$this->registerHook('paymentReturn')) {
-            return false;
-        }
-        return true;
+        return parent::install()
+            && $this->registerHook('payment')
+            && $this->registerHook('displayPaymentEU')
+            && $this->registerHook('paymentReturn')
+        ;
     }
 
     public function uninstall()
     {
-        if (!Configuration::deleteByName('CHEQUE_NAME') || !Configuration::deleteByName('CHEQUE_ADDRESS') || !parent::uninstall()) {
-            return false;
-        }
-        return true;
+        return Configuration::deleteByName('CHEQUE_NAME')
+            && Configuration::deleteByName('CHEQUE_ADDRESS')
+            && parent::uninstall()
+        ;
     }
 
     private function _postValidation()
@@ -245,11 +246,6 @@ class cheque extends PaymentModule
 
         $helper = new HelperForm();
         $helper->show_toolbar = false;
-        $helper->table = $this->table;
-        $lang = new Language((int)Configuration::get('PS_LANG_DEFAULT'));
-        $helper->default_form_language = $lang->id;
-        $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
-        $this->fields_form = array();
         $helper->id = (int)Tools::getValue('id_carrier');
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'btnSubmit';
@@ -257,9 +253,9 @@ class cheque extends PaymentModule
         $helper->token = Tools::getAdminTokenLite('AdminModules');
         $helper->tpl_vars = array(
             'fields_value' => $this->getConfigFieldsValues(),
-            'languages' => $this->context->controller->getLanguages(),
-            'id_language' => $this->context->language->id
         );
+
+        $this->fields_form = array();
 
         return $helper->generateForm(array($fields_form));
     }
