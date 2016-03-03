@@ -24,7 +24,7 @@
 *}
 
 <section>
-  <p>{l s='Please send us your check following these rules:' mod='bankwire'}
+  <p>{l s='Please send us your check following these rules:' mod='cheque'}
     <dl>
       <dt>{l s='Amount' mod='cheque'}</dt>
       <dd>{$chequeTotal}</dd>
