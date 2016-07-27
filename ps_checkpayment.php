@@ -30,20 +30,20 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class cheque extends PaymentModule
+class Ps_Checkpayment extends PaymentModule
 {
     private $_html = '';
     private $_postErrors = array();
 
-    public $chequeName;
+    public $checkName;
     public $address;
     public $extra_mail_vars;
 
     public function __construct()
     {
-        $this->name = 'cheque';
+        $this->name = 'ps_checkpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '3.0.0';
+        $this->version = '1.0.0';
         $this->author = 'PrestaShop';
         $this->controllers = array('payment', 'validation');
 
@@ -52,7 +52,7 @@ class cheque extends PaymentModule
 
         $config = Configuration::getMultiple(array('CHEQUE_NAME', 'CHEQUE_ADDRESS'));
         if (isset($config['CHEQUE_NAME'])) {
-            $this->chequeName = $config['CHEQUE_NAME'];
+            $this->checkName = $config['CHEQUE_NAME'];
         }
         if (isset($config['CHEQUE_ADDRESS'])) {
             $this->address = $config['CHEQUE_ADDRESS'];
@@ -64,9 +64,9 @@ class cheque extends PaymentModule
         $this->displayName = $this->l('Payments by check');
         $this->description = $this->l('This module allows you to accept payments by check.');
         $this->confirmUninstall = $this->l('Are you sure you want to delete these details?');
-        $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
+        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
 
-        if ((!isset($this->chequeName) || !isset($this->address) || empty($this->chequeName) || empty($this->address))) {
+        if ((!isset($this->checkName) || !isset($this->address) || empty($this->checkName) || empty($this->address))) {
             $this->warning = $this->l('The "Pay to the order of" and "Address" fields must be configured before using this module.');
         }
         if (!count(Currency::checkPaymentCurrencies($this->id))) {
@@ -74,9 +74,9 @@ class cheque extends PaymentModule
         }
 
         $this->extra_mail_vars = array(
-                                    '{cheque_name}' => Configuration::get('CHEQUE_NAME'),
-                                    '{cheque_address}' => Configuration::get('CHEQUE_ADDRESS'),
-                                    '{cheque_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'))
+                                    '{check_name}' => Configuration::get('CHEQUE_NAME'),
+                                    '{check_address}' => Configuration::get('CHEQUE_ADDRESS'),
+                                    '{check_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'))
                                 );
     }
 
@@ -116,7 +116,7 @@ class cheque extends PaymentModule
         $this->_html .= $this->displayConfirmation($this->l('Settings updated'));
     }
 
-    private function _displayCheque()
+    private function _displayCheck()
     {
         return $this->display(__FILE__, 'infos.tpl');
     }
@@ -136,7 +136,7 @@ class cheque extends PaymentModule
             }
         }
 
-        $this->_html .= $this->_displayCheque();
+        $this->_html .= $this->_displayCheck();
         $this->_html .= $this->renderForm();
 
         return $this->_html;
@@ -158,7 +158,7 @@ class cheque extends PaymentModule
         $newOption = new PaymentOption();
         $newOption->setCallToActionText($this->l('Pay by Check'))
                 ->setAction($this->context->link->getModuleLink($this->name, 'validation', array(), true))
-                ->setAdditionalInformation($this->context->smarty->fetch('module:cheque/views/templates/front/payment_infos.tpl'));
+                ->setAdditionalInformation($this->context->smarty->fetch('module:ps_checkpayment/views/templates/front/payment_infos.tpl'));
 
         return [$newOption];
     }
@@ -169,17 +169,22 @@ class cheque extends PaymentModule
             return;
         }
 
-        $state = $params['objOrder']->getCurrentState();
+        $state = $params['order']->getCurrentState();
         if (in_array($state, array(Configuration::get('PS_OS_CHEQUE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID')))) {
             $this->smarty->assign(array(
-                'total_to_pay' => Tools::displayPrice($params['total_to_pay'], $params['currencyObj'], false),
-                'chequeName' => $this->chequeName,
-                'chequeAddress' => Tools::nl2br($this->address),
+                'total_to_pay' => Tools::displayPrice(
+                    $params['order']->getOrdersTotalPaid(),
+                    new Currency($params['order']->id_currency),
+                    false
+                ),
+                'shop_name' => $this->context->shop->name,
+                'checkName' => $this->checkName,
+                'checkAddress' => Tools::nl2br($this->address),
                 'status' => 'ok',
-                'id_order' => $params['objOrder']->id
+                'id_order' => $params['order']->id
             ));
-            if (isset($params['objOrder']->reference) && !empty($params['objOrder']->reference)) {
-                $this->smarty->assign('reference', $params['objOrder']->reference);
+            if (isset($params['order']->reference) && !empty($params['order']->reference)) {
+                $this->smarty->assign('reference', $params['order']->reference);
             }
         } else {
             $this->smarty->assign('status', 'failed');
@@ -263,20 +268,20 @@ class cheque extends PaymentModule
             Tools::displayPrice($cart->getOrderTotal(true, Cart::BOTH))
         );
 
-        $chequeOrder = Configuration::get('CHEQUE_NAME');
-        if (!$chequeOrder) {
-            $chequeOrder = '___________';
+        $checkOrder = Configuration::get('CHEQUE_NAME');
+        if (!$checkOrder) {
+            $checkOrder = '___________';
         }
 
-        $chequeAddress = Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'));
-        if (!$chequeAddress) {
-            $chequeAddress = '___________';
+        $checkAddress = Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'));
+        if (!$checkAddress) {
+            $checkAddress = '___________';
         }
 
         return [
-            'chequeTotal' => $total,
-            'chequeOrder' => $chequeOrder,
-            'chequeAddress' => $chequeAddress,
+            'checkTotal' => $total,
+            'checkOrder' => $checkOrder,
+            'checkAddress' => $checkAddress,
         ];
     }
 }

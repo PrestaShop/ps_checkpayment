@@ -27,7 +27,7 @@
 /**
  * @since 1.5.0
  */
-class ChequePaymentModuleFrontController extends ModuleFrontController
+class Ps_CheckpaymentPaymentModuleFrontController extends ModuleFrontController
 {
     public $ssl = true;
     public $display_column_left = false;
@@ -50,10 +50,10 @@ class ChequePaymentModuleFrontController extends ModuleFrontController
             'currencies' => $this->module->getCurrency((int)$cart->id_currency),
             'total' => $cart->getOrderTotal(true, Cart::BOTH),
             'isoCode' => $this->context->language->iso_code,
-            'chequeName' => $this->module->chequeName,
-            'chequeAddress' => Tools::nl2br($this->module->address),
+            'checkName' => $this->module->checkName,
+            'checkAddress' => Tools::nl2br($this->module->address),
             'this_path' => $this->module->getPathUri(),
-            'this_path_cheque' => $this->module->getPathUri(),
+            'this_path_check' => $this->module->getPathUri(),
             'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->module->name.'/'
         ));
 

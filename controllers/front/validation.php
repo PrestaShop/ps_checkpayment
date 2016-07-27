@@ -27,7 +27,7 @@
 /**
  * @since 1.5.0
  */
-class ChequeValidationModuleFrontController extends ModuleFrontController
+class Ps_CheckpaymentValidationModuleFrontController extends ModuleFrontController
 {
     public function postProcess()
     {
@@ -40,7 +40,7 @@ class ChequeValidationModuleFrontController extends ModuleFrontController
         // Check that this payment option is still available in case the customer changed his address just before the end of the checkout process
         $authorized = false;
         foreach (Module::getPaymentModules() as $module) {
-            if ($module['name'] == 'cheque') {
+            if ($module['name'] == 'ps_checkpayment') {
                 $authorized = true;
                 break;
             }
@@ -60,9 +60,9 @@ class ChequeValidationModuleFrontController extends ModuleFrontController
         $total = (float)$cart->getOrderTotal(true, Cart::BOTH);
 
         $mailVars =    array(
-            '{cheque_name}' => Configuration::get('CHEQUE_NAME'),
-            '{cheque_address}' => Configuration::get('CHEQUE_ADDRESS'),
-            '{cheque_address_html}' => str_replace("\n", '<br />', Configuration::get('CHEQUE_ADDRESS')));
+            '{check_name}' => Configuration::get('CHEQUE_NAME'),
+            '{check_address}' => Configuration::get('CHEQUE_ADDRESS'),
+            '{check_address_html}' => str_replace("\n", '<br />', Configuration::get('CHEQUE_ADDRESS')));
 
         $this->module->validateOrder((int)$cart->id, Configuration::get('PS_OS_CHEQUE'), $total, $this->module->displayName, null, $mailVars, (int)$currency->id, false, $customer->secure_key);
         Tools::redirect('index.php?controller=order-confirmation&id_cart='.(int)$cart->id.'&id_module='.(int)$this->module->id.'&id_order='.$this->module->currentOrder.'&key='.$customer->secure_key);

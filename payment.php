@@ -38,4 +38,4 @@ Tools::displayFileAsDeprecated();
 $controller = new FrontController();
 $controller->init();
 
-Tools::redirect(Context::getContext()->link->getModuleLink('cheque', 'payment'));
+Tools::redirect(Context::getContext()->link->getModuleLink('ps_checkpayment', 'payment'));

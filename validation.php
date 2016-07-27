@@ -32,26 +32,26 @@ include(dirname(__FILE__).'/../../config/config.inc.php');
 Tools::displayFileAsDeprecated();
 
 include(dirname(__FILE__).'/../../header.php');
-include(dirname(__FILE__).'/cheque.php');
+include(dirname(__FILE__).'/ps_checkpayment.php');
 
 $context = Context::getContext();
 $cart = $context->cart;
-$cheque = new Cheque();
+$psCheckpayment = new Ps_Checkpayment();
 
-if ($cart->id_customer == 0 or $cart->id_address_delivery == 0 or $cart->id_address_invoice == 0 or !$cheque->active) {
+if ($cart->id_customer == 0 or $cart->id_address_delivery == 0 or $cart->id_address_invoice == 0 or !$psCheckpayment->active) {
     Tools::redirect('index.php?controller=order&step=1');
 }
 
 // Check that this payment option is still available in case the customer changed his address just before the end of the checkout process
 $authorized = false;
 foreach (Module::getPaymentModules() as $module) {
-    if ($module['name'] == 'cheque') {
+    if ($module['name'] == 'ps_checkpayment') {
         $authorized = true;
         break;
     }
 }
 if (!$authorized) {
-    die($cheque->l('This payment method is not available.', 'validation'));
+    die($psCheckpayment->l('This payment method is not available.', 'validation'));
 }
 
 $customer = new Customer($cart->id_customer);
@@ -63,6 +63,6 @@ if (!Validate::isLoadedObject($customer)) {
 $currency = $context->currency;
 $total = (float)$cart->getOrderTotal(true, Cart::BOTH);
 
-$cheque->validateOrder((int)$cart->id, Configuration::get('PS_OS_CHEQUE'), $total, $cheque->displayName, null, array(), (int)$currency->id, false, $customer->secure_key);
+$psCheckpayment->validateOrder((int)$cart->id, Configuration::get('PS_OS_CHEQUE'), $total, $psCheckpayment->displayName, null, array(), (int)$currency->id, false, $customer->secure_key);
 
-Tools::redirect('index.php?controller=order-confirmation&id_cart='.(int)($cart->id).'&id_module='.(int)($cheque->id).'&id_order='.$cheque->currentOrder.'&key='.$customer->secure_key);
+Tools::redirect('index.php?controller=order-confirmation&id_cart='.(int)($cart->id).'&id_module='.(int)($psCheckpayment->id).'&id_order='.$psCheckpayment->currentOrder.'&key='.$customer->secure_key);
