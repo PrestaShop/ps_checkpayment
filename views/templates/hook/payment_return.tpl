@@ -24,24 +24,24 @@
 *}
 
 {if $status == 'ok'}
-	<p>{l s='Your order on %s is complete.' sprintf=$shop_name mod='ps_checkpayment'}
+	<p>{l s='Your order on %s is complete.' sprintf=$shop_name d='Modules.CheckPayment.Shop'}
 		<br /><br />
-		{l s='Your check must include:' mod='ps_checkpayment'}
-		<br /><br />- {l s='Payment amount.' mod='ps_checkpayment'} <span class="price"><strong>{$total_to_pay}</strong></span>
-		<br /><br />- {l s='Payable to the order of' mod='ps_checkpayment'} <strong>{if $checkName}{$checkName}{else}___________{/if}</strong>
-		<br /><br />- {l s='Mail to' mod='ps_checkpayment'} <strong>{if $checkAddress}{$checkAddress}{else}___________{/if}</strong>
+		{l s='Your check must include:' d='Modules.CheckPayment.Shop'}
+		<br /><br />- {l s='Payment amount.' d='Modules.CheckPayment.Shop'} <span class="price"><strong>{$total_to_pay}</strong></span>
+		<br /><br />- {l s='Payable to the order of' d='Modules.CheckPayment.Shop'} <strong>{if $checkName}{$checkName}{else}___________{/if}</strong>
+		<br /><br />- {l s='Mail to' d='Modules.CheckPayment.Shop'} <strong>{if $checkAddress}{$checkAddress}{else}___________{/if}</strong>
 		{if !isset($reference)}
-			<br /><br />- {l s='Do not forget to insert your order number #%d.' sprintf=$id_order mod='ps_checkpayment'}
+			<br /><br />- {l s='Do not forget to insert your order number #%d.' sprintf=$id_order d='Modules.CheckPayment.Shop'}
 		{else}
-			<br /><br />- {l s='Do not forget to insert your order reference %s.' sprintf=$reference mod='ps_checkpayment'}
+			<br /><br />- {l s='Do not forget to insert your order reference %s.' sprintf=$reference d='Modules.CheckPayment.Shop'}
 		{/if}
-		<br /><br />{l s='An email has been sent to you with this information.' mod='ps_checkpayment'}
-		<br /><br /><strong>{l s='Your order will be sent as soon as we receive your payment.' mod='ps_checkpayment'}</strong>
-		<br /><br />{l s='For any questions or for further information, please contact our' mod='ps_checkpayment'} <a href="{$link->getPageLink('contact', true)|escape:'html'}">{l s='customer service department.' mod='ps_checkpayment'}</a>.
+		<br /><br />{l s='An email has been sent to you with this information.' d='Modules.CheckPayment.Shop'}
+		<br /><br /><strong>{l s='Your order will be sent as soon as we receive your payment.' d='Modules.CheckPayment.Shop'}</strong>
+		<br /><br />{l s='For any questions or for further information, please contact our' d='Modules.CheckPayment.Shop'} <a href="{$link->getPageLink('contact', true)|escape:'html'}">{l s='customer service department.' d='Modules.CheckPayment.Shop'}</a>.
 	</p>
 {else}
 	<p class="warning">
-		{l s='We have noticed that there is a problem with your order. If you think this is an error, you can contact our' mod='ps_checkpayment'}
-		<a href="{$link->getPageLink('contact', true)|escape:'html'}">{l s='customer service department.' mod='ps_checkpayment'}</a>.
+		{l s='We have noticed that there is a problem with your order. If you think this is an error, you can contact our' d='Modules.CheckPayment.Shop'}
+		<a href="{$link->getPageLink('contact', true)|escape:'html'}">{l s='customer service department.' d='Modules.CheckPayment.Shop'}</a>.
 	</p>
 {/if}

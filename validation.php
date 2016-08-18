@@ -51,7 +51,7 @@ foreach (Module::getPaymentModules() as $module) {
     }
 }
 if (!$authorized) {
-    die($psCheckpayment->l('This payment method is not available.', 'validation'));
+    die($psCheckpayment->l('This payment method is not available.', 'Modules.CheckPayment.Admin'));
 }
 
 $customer = new Customer($cart->id_customer);

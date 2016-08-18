@@ -24,13 +24,13 @@
 *}
 
 <section>
-  <p>{l s='Please send us your check following these rules:' mod='ps_checkpayment'}
+  <p>{l s='Please send us your check following these rules:' d='Modules.CheckPayment.Shop'}
     <dl>
-      <dt>{l s='Amount' mod='ps_checkpayment'}</dt>
+      <dt>{l s='Amount' d='Modules.CheckPayment.Shop'}</dt>
       <dd>{$checkTotal}</dd>
-      <dt>{l s='Check order' mod='ps_checkpayment'}</dt>
+      <dt>{l s='Payee' d='Modules.CheckPayment.Shop'}</dt>
       <dd>{$checkOrder}</dd>
-      <dt>{l s='Send your check at this address' mod='ps_checkpayment'}</dt>
+      <dt>{l s='Send your check at this address' d='Modules.CheckPayment.Shop'}</dt>
       <dd>{$checkAddress nofilter}</dd>
     </dl>
   </p>
