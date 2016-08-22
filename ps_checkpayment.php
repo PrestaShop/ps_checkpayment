@@ -263,8 +263,12 @@ class Ps_Checkpayment extends PaymentModule
     public function getTemplateVars()
     {
         $cart = $this->context->cart;
-        $total = sprintf(
-            $this->trans('%1$s (tax incl.)', array(Tools::displayPrice($cart->getOrderTotal(true, Cart::BOTH))), 'Modules.CheckPayment.Admin'),
+        $total = $this->trans(
+            '%amount% (tax incl.)',
+            array(
+                '%amount%' => Tools::displayPrice($cart->getOrderTotal(true, Cart::BOTH)),
+            ),
+            'Modules.CheckPayment.Admin'
         );
 
         $checkOrder = Configuration::get('CHEQUE_NAME');
