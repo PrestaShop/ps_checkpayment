@@ -64,7 +64,7 @@ class Ps_Checkpayment extends PaymentModule
         $this->displayName = $this->trans('Payments by check', array(), 'Modules.CheckPayment.Admin');
         $this->description = $this->trans('This module allows you to accept payments by check.', array(), 'Modules.CheckPayment.Admin');
         $this->confirmUninstall = $this->trans('Are you sure you want to delete these details?', array(), 'Modules.CheckPayment.Admin');
-        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
+        $this->ps_versions_compliancy = array('min' => '1.7.0.0', 'max' => _PS_VERSION_);
 
         if ((!isset($this->checkName) || !isset($this->address) || empty($this->checkName) || empty($this->address))) {
             $this->warning = $this->trans('The "Payee" and "Address" fields must be configured before using this module.', array(), 'Modules.CheckPayment.Admin');
