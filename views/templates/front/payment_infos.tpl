@@ -30,7 +30,7 @@
       <dd>{$checkTotal}</dd>
       <dt>{l s='Payee' d='Modules.CheckPayment.Shop'}</dt>
       <dd>{$checkOrder}</dd>
-      <dt>{l s='Send your check at this address' d='Modules.CheckPayment.Shop'}</dt>
+      <dt>{l s='Send your check to this address' d='Modules.CheckPayment.Shop'}</dt>
       <dd>{$checkAddress nofilter}</dd>
     </dl>
   </p>
