@@ -118,7 +118,7 @@ class Ps_Checkpayment extends PaymentModule
 
     private function _displayCheck()
     {
-        return $this->display(__FILE__, 'infos.tpl');
+        return $this->fetch('module:ps_checkpayment/views/templates/hook/infos.tpl');
     }
 
     public function getContent()
@@ -151,14 +151,14 @@ class Ps_Checkpayment extends PaymentModule
             return;
         }
 
-        $this->context->smarty->assign(
+        $this->smarty->assign(
             $this->getTemplateVars()
         );
 
         $newOption = new PaymentOption();
         $newOption->setCallToActionText($this->trans('Pay by Check', array(), 'Modules.CheckPayment.Admin'))
                 ->setAction($this->context->link->getModuleLink($this->name, 'validation', array(), true))
-                ->setAdditionalInformation($this->context->smarty->fetch('module:ps_checkpayment/views/templates/front/payment_infos.tpl'));
+                ->setAdditionalInformation($this->fetch('module:ps_checkpayment/views/templates/front/payment_infos.tpl'));
 
         return [$newOption];
     }
@@ -189,7 +189,7 @@ class Ps_Checkpayment extends PaymentModule
         } else {
             $this->smarty->assign('status', 'failed');
         }
-        return $this->display(__FILE__, 'payment_return.tpl');
+        return $this->fetch('module:ps_checkpayment/views/templates/hook/payment_return.tpl');
     }
 
     public function checkCurrency($cart)
