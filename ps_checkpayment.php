@@ -118,7 +118,7 @@ class Ps_Checkpayment extends PaymentModule
 
     private function _displayCheck()
     {
-        return $this->fetch('module:ps_checkpayment/views/templates/hook/infos.tpl');
+        return $this->display(__FILE__, './views/templates/hook/infos.tpl');
     }
 
     public function getContent()
