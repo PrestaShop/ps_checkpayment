@@ -30,7 +30,6 @@
 class Ps_CheckpaymentPaymentModuleFrontController extends ModuleFrontController
 {
     public $ssl = true;
-    public $display_column_left = false;
 
     /**
      * @see FrontController::initContent()
