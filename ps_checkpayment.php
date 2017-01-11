@@ -61,16 +61,16 @@ class Ps_Checkpayment extends PaymentModule
         $this->bootstrap = true;
         parent::__construct();
 
-        $this->displayName = $this->trans('Payments by check', array(), 'Modules.CheckPayment.Admin');
-        $this->description = $this->trans('This module allows you to accept payments by check.', array(), 'Modules.CheckPayment.Admin');
-        $this->confirmUninstall = $this->trans('Are you sure you want to delete these details?', array(), 'Modules.CheckPayment.Admin');
-        $this->ps_versions_compliancy = array('min' => '1.7.0.0', 'max' => _PS_VERSION_);
+        $this->displayName = $this->trans('Payments by check', array(), 'Modules.Checkpayment.Admin');
+        $this->description = $this->trans('This module allows you to accept payments by check.', array(), 'Modules.Checkpayment.Admin');
+        $this->confirmUninstall = $this->trans('Are you sure you want to delete these details?', array(), 'Modules.Checkpayment.Admin');
+        $this->ps_versions_compliancy = array('min' => '1.7.1.0', 'max' => _PS_VERSION_);
 
         if ((!isset($this->checkName) || !isset($this->address) || empty($this->checkName) || empty($this->address))) {
-            $this->warning = $this->trans('The "Payee" and "Address" fields must be configured before using this module.', array(), 'Modules.CheckPayment.Admin');
+            $this->warning = $this->trans('The "Payee" and "Address" fields must be configured before using this module.', array(), 'Modules.Checkpayment.Admin');
         }
         if (!count(Currency::checkPaymentCurrencies($this->id))) {
-            $this->warning = $this->trans('No currency has been set for this module.', array(), 'Modules.CheckPayment.Admin');
+            $this->warning = $this->trans('No currency has been set for this module.', array(), 'Modules.Checkpayment.Admin');
         }
 
         $this->extra_mail_vars = array(
@@ -100,9 +100,9 @@ class Ps_Checkpayment extends PaymentModule
     {
         if (Tools::isSubmit('btnSubmit')) {
             if (!Tools::getValue('CHEQUE_NAME')) {
-                $this->_postErrors[] = $this->trans('The "Payee" field is required.', array(),'Modules.CheckPayment.Admin');
+                $this->_postErrors[] = $this->trans('The "Payee" field is required.', array(),'Modules.Checkpayment.Admin');
             } elseif (!Tools::getValue('CHEQUE_ADDRESS')) {
-                $this->_postErrors[] = $this->trans('The "Address" field is required.', array(), 'Modules.CheckPayment.Admin');
+                $this->_postErrors[] = $this->trans('The "Address" field is required.', array(), 'Modules.Checkpayment.Admin');
             }
         }
     }
@@ -156,7 +156,7 @@ class Ps_Checkpayment extends PaymentModule
         );
 
         $newOption = new PaymentOption();
-        $newOption->setCallToActionText($this->trans('Pay by Check', array(), 'Modules.CheckPayment.Admin'))
+        $newOption->setCallToActionText($this->trans('Pay by Check', array(), 'Modules.Checkpayment.Admin'))
                 ->setAction($this->context->link->getModuleLink($this->name, 'validation', array(), true))
                 ->setAdditionalInformation($this->fetch('module:ps_checkpayment/views/templates/front/payment_infos.tpl'));
 
@@ -212,20 +212,20 @@ class Ps_Checkpayment extends PaymentModule
         $fields_form = array(
             'form' => array(
                 'legend' => array(
-                    'title' => $this->trans('Contact details', array(), 'Modules.CheckPayment.Admin'),
+                    'title' => $this->trans('Contact details', array(), 'Modules.Checkpayment.Admin'),
                     'icon' => 'icon-envelope'
                 ),
                 'input' => array(
                     array(
                         'type' => 'text',
-                        'label' => $this->trans('Payee (name)', array(), 'Modules.CheckPayment.Admin'),
+                        'label' => $this->trans('Payee (name)', array(), 'Modules.Checkpayment.Admin'),
                         'name' => 'CHEQUE_NAME',
                         'required' => true
                     ),
                     array(
                         'type' => 'textarea',
-                        'label' => $this->trans('Address', array(), 'Modules.CheckPayment.Admin'),
-                        'desc' => $this->trans('Address where the check should be sent to.', array(), 'Modules.CheckPayment.Admin'),
+                        'label' => $this->trans('Address', array(), 'Modules.Checkpayment.Admin'),
+                        'desc' => $this->trans('Address where the check should be sent to.', array(), 'Modules.Checkpayment.Admin'),
                         'name' => 'CHEQUE_ADDRESS',
                         'required' => true
                     ),
@@ -268,7 +268,7 @@ class Ps_Checkpayment extends PaymentModule
             array(
                 '%amount%' => Tools::displayPrice($cart->getOrderTotal(true, Cart::BOTH)),
             ),
-            'Modules.CheckPayment.Admin'
+            'Modules.Checkpayment.Admin'
         );
 
         $checkOrder = Configuration::get('CHEQUE_NAME');
