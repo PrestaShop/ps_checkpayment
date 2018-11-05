@@ -43,7 +43,7 @@ class Ps_Checkpayment extends PaymentModule
     {
         $this->name = 'ps_checkpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '2.0.3';
+        $this->version = '2.0.4';
         $this->author = 'PrestaShop';
         $this->controllers = array('payment', 'validation');
 
