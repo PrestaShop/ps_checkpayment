@@ -60,7 +60,7 @@ class Ps_CheckpaymentValidationModuleFrontController extends ModuleFrontControll
         $currency = $this->context->currency;
         $total = (float)$cart->getOrderTotal(true, Cart::BOTH);
 
-        $mailVars =    [
+        $mailVars = [
             '{check_name}' => Configuration::get('CHEQUE_NAME'),
             '{check_address}' => Configuration::get('CHEQUE_ADDRESS'),
             '{check_address_html}' => str_replace("\n", '<br />', Configuration::get('CHEQUE_ADDRESS'))];
