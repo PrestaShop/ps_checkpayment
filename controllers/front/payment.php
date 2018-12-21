@@ -46,7 +46,7 @@ class Ps_CheckpaymentPaymentModuleFrontController extends ModuleFrontController
         $this->context->smarty->assign([
             'nbProducts' => $cart->nbProducts(),
             'cust_currency' => $cart->id_currency,
-            'currencies' => $this->module->getCurrency((int)$cart->id_currency),
+            'currencies' => $this->module->getCurrency((int) $cart->id_currency),
             'total' => $cart->getOrderTotal(true, Cart::BOTH),
             'isoCode' => $this->context->language->iso_code,
             'checkName' => $this->module->checkName,

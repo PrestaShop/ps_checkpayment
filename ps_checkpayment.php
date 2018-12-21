@@ -194,8 +194,8 @@ class Ps_Checkpayment extends PaymentModule
 
     public function checkCurrency($cart)
     {
-        $currency_order = new Currency((int)($cart->id_currency));
-        $currencies_module = $this->getCurrency((int)$cart->id_currency);
+        $currency_order = new Currency((int) ($cart->id_currency));
+        $currencies_module = $this->getCurrency((int) $cart->id_currency);
 
         if (is_array($currencies_module)) {
             foreach ($currencies_module as $currency_module) {
@@ -239,7 +239,7 @@ class Ps_Checkpayment extends PaymentModule
 
         $helper = new HelperForm();
         $helper->show_toolbar = false;
-        $helper->id = (int)Tools::getValue('id_carrier');
+        $helper->id = (int) Tools::getValue('id_carrier');
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'btnSubmit';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
