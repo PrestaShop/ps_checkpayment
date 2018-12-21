@@ -53,7 +53,7 @@ class Ps_CheckpaymentPaymentModuleFrontController extends ModuleFrontController
             'checkAddress' => Tools::nl2br($this->module->address),
             'this_path' => $this->module->getPathUri(),
             'this_path_check' => $this->module->getPathUri(),
-            'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->module->name . '/'
+            'this_path_ssl' => Tools::getShopDomainSsl(true, true) . __PS_BASE_URI__ . 'modules/' . $this->module->name . '/',
         ]);
 
         $this->setTemplate('payment_execution.tpl');

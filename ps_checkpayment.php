@@ -79,7 +79,7 @@ class Ps_Checkpayment extends PaymentModule
         $this->extra_mail_vars = [
             '{check_name}' => Configuration::get('CHEQUE_NAME'),
             '{check_address}' => Configuration::get('CHEQUE_ADDRESS'),
-            '{check_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'))
+            '{check_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS')),
         ];
     }
 
@@ -183,7 +183,7 @@ class Ps_Checkpayment extends PaymentModule
                 'checkName' => $this->checkName,
                 'checkAddress' => Tools::nl2br($this->address),
                 'status' => 'ok',
-                'id_order' => $params['order']->id
+                'id_order' => $params['order']->id,
             ]);
             if (isset($params['order']->reference) && ! empty($params['order']->reference)) {
                 $this->smarty->assign('reference', $params['order']->reference);
@@ -217,26 +217,26 @@ class Ps_Checkpayment extends PaymentModule
             'form' => [
                 'legend' => [
                     'title' => $this->trans('Contact details', [], 'Modules.Checkpayment.Admin'),
-                    'icon' => 'icon-envelope'
+                    'icon' => 'icon-envelope',
                 ],
                 'input' => [
                     [
                         'type' => 'text',
                         'label' => $this->trans('Payee (name)', [], 'Modules.Checkpayment.Admin'),
                         'name' => 'CHEQUE_NAME',
-                        'required' => true
+                        'required' => true,
                     ],
                     [
                         'type' => 'textarea',
                         'label' => $this->trans('Address', [], 'Modules.Checkpayment.Admin'),
                         'desc' => $this->trans('Address where the check should be sent to.', [], 'Modules.Checkpayment.Admin'),
                         'name' => 'CHEQUE_ADDRESS',
-                        'required' => true
+                        'required' => true,
                     ],
                 ],
                 'submit' => [
                     'title' => $this->trans('Save', [], 'Admin.Actions'),
-                ]
+                ],
             ],
         ];
 
