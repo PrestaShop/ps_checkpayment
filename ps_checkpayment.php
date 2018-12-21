@@ -101,7 +101,7 @@ class Ps_Checkpayment extends PaymentModule
     {
         if (Tools::isSubmit('btnSubmit')) {
             if ( ! Tools::getValue('CHEQUE_NAME')) {
-                $this->_postErrors[] = $this->trans('The "Payee" field is required.', [],'Modules.Checkpayment.Admin');
+                $this->_postErrors[] = $this->trans('The "Payee" field is required.', [], 'Modules.Checkpayment.Admin');
             } elseif ( ! Tools::getValue('CHEQUE_ADDRESS')) {
                 $this->_postErrors[] = $this->trans('The "Address" field is required.', [], 'Modules.Checkpayment.Admin');
             }
