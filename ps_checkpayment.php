@@ -74,10 +74,10 @@ class Ps_Checkpayment extends PaymentModule
         }
 
         $this->extra_mail_vars = array(
-                                    '{check_name}' => Configuration::get('CHEQUE_NAME'),
-                                    '{check_address}' => Configuration::get('CHEQUE_ADDRESS'),
-                                    '{check_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'))
-                                );
+            '{check_name}' => Configuration::get('CHEQUE_NAME'),
+            '{check_address}' => Configuration::get('CHEQUE_ADDRESS'),
+            '{check_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'))
+        );
     }
 
     public function install()
