@@ -42,6 +42,7 @@ class Ps_CheckpaymentValidationModuleFrontController extends ModuleFrontControll
         foreach (Module::getPaymentModules() as $module) {
             if ($module['name'] == 'ps_checkpayment') {
                 $authorized = true;
+
                 break;
             }
         }

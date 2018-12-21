@@ -188,6 +188,7 @@ class Ps_Checkpayment extends PaymentModule
         } else {
             $this->smarty->assign('status', 'failed');
         }
+
         return $this->fetch('module:ps_checkpayment/views/templates/hook/payment_return.tpl');
     }
 
@@ -203,6 +204,7 @@ class Ps_Checkpayment extends PaymentModule
                 }
             }
         }
+
         return false;
     }
 

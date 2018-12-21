@@ -34,5 +34,6 @@ function upgrade_module_2_5_8($module)
     if ($hook_to_remove_id) {
         $module->unregisterHook((int)$hook_to_remove_id);
     }
+
     return true;
 }
