@@ -33,10 +33,13 @@ if ( ! defined('_PS_VERSION_')) {
 class Ps_Checkpayment extends PaymentModule
 {
     private $_html = '';
+
     private $_postErrors = [];
 
     public $checkName;
+
     public $address;
+
     public $extra_mail_vars;
 
     public function __construct()
