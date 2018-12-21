@@ -84,16 +84,14 @@ class Ps_Checkpayment extends PaymentModule
     {
         return parent::install()
             && $this->registerHook('paymentOptions')
-            && $this->registerHook('paymentReturn')
-        ;
+            && $this->registerHook('paymentReturn');
     }
 
     public function uninstall()
     {
         return Configuration::deleteByName('CHEQUE_NAME')
             && Configuration::deleteByName('CHEQUE_ADDRESS')
-            && parent::uninstall()
-        ;
+            && parent::uninstall();
     }
 
     private function _postValidation()
