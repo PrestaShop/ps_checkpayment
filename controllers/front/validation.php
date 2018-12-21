@@ -33,7 +33,7 @@ class Ps_CheckpaymentValidationModuleFrontController extends ModuleFrontControll
     {
         $cart = $this->context->cart;
 
-        if ($cart->id_customer == 0 || $cart->id_address_delivery == 0 || $cart->id_address_invoice == 0 || !$this->module->active) {
+        if ($cart->id_customer == 0 || $cart->id_address_delivery == 0 || $cart->id_address_invoice == 0 || ! $this->module->active) {
             Tools::redirect('index.php?controller=order&step=1');
         }
 
@@ -46,13 +46,13 @@ class Ps_CheckpaymentValidationModuleFrontController extends ModuleFrontControll
             }
         }
 
-        if (!$authorized) {
+        if ( ! $authorized) {
             die($this->trans('This payment method is not available.', [], 'Modules.Checkpayment.Shop'));
         }
 
         $customer = new Customer($cart->id_customer);
 
-        if (!Validate::isLoadedObject($customer)) {
+        if ( ! Validate::isLoadedObject($customer)) {
             Tools::redirect('index.php?controller=order&step=1');
         }
 

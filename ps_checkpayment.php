@@ -26,7 +26,7 @@
 
 use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
 
-if (!defined('_PS_VERSION_')) {
+if ( ! defined('_PS_VERSION_')) {
     exit;
 }
 
@@ -66,10 +66,10 @@ class Ps_Checkpayment extends PaymentModule
         $this->confirmUninstall = $this->trans('Are you sure you want to delete these details?', [], 'Modules.Checkpayment.Admin');
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
 
-        if ((!isset($this->checkName) || !isset($this->address) || empty($this->checkName) || empty($this->address))) {
+        if (( ! isset($this->checkName) || ! isset($this->address) || empty($this->checkName) || empty($this->address))) {
             $this->warning = $this->trans('The "Payee" and "Address" fields must be configured before using this module.', [], 'Modules.Checkpayment.Admin');
         }
-        if (!count(Currency::checkPaymentCurrencies($this->id))) {
+        if ( ! count(Currency::checkPaymentCurrencies($this->id))) {
             $this->warning = $this->trans('No currency has been set for this module.', [], 'Modules.Checkpayment.Admin');
         }
 
@@ -97,9 +97,9 @@ class Ps_Checkpayment extends PaymentModule
     private function _postValidation()
     {
         if (Tools::isSubmit('btnSubmit')) {
-            if (!Tools::getValue('CHEQUE_NAME')) {
+            if ( ! Tools::getValue('CHEQUE_NAME')) {
                 $this->_postErrors[] = $this->trans('The "Payee" field is required.', [],'Modules.Checkpayment.Admin');
-            } elseif (!Tools::getValue('CHEQUE_ADDRESS')) {
+            } elseif ( ! Tools::getValue('CHEQUE_ADDRESS')) {
                 $this->_postErrors[] = $this->trans('The "Address" field is required.', [], 'Modules.Checkpayment.Admin');
             }
         }
@@ -125,7 +125,7 @@ class Ps_Checkpayment extends PaymentModule
 
         if (Tools::isSubmit('btnSubmit')) {
             $this->_postValidation();
-            if (!count($this->_postErrors)) {
+            if ( ! count($this->_postErrors)) {
                 $this->_postProcess();
             } else {
                 foreach ($this->_postErrors as $err) {
@@ -142,10 +142,10 @@ class Ps_Checkpayment extends PaymentModule
 
     public function hookPaymentOptions($params)
     {
-        if (!$this->active) {
+        if ( ! $this->active) {
             return;
         }
-        if (!$this->checkCurrency($params['cart'])) {
+        if ( ! $this->checkCurrency($params['cart'])) {
             return;
         }
 
@@ -164,7 +164,7 @@ class Ps_Checkpayment extends PaymentModule
 
     public function hookPaymentReturn($params)
     {
-        if (!$this->active) {
+        if ( ! $this->active) {
             return;
         }
 
@@ -182,7 +182,7 @@ class Ps_Checkpayment extends PaymentModule
                 'status' => 'ok',
                 'id_order' => $params['order']->id
             ]);
-            if (isset($params['order']->reference) && !empty($params['order']->reference)) {
+            if (isset($params['order']->reference) && ! empty($params['order']->reference)) {
                 $this->smarty->assign('reference', $params['order']->reference);
             }
         } else {
@@ -271,12 +271,12 @@ class Ps_Checkpayment extends PaymentModule
         );
 
         $checkOrder = Configuration::get('CHEQUE_NAME');
-        if (!$checkOrder) {
+        if ( ! $checkOrder) {
             $checkOrder = '___________';
         }
 
         $checkAddress = Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'));
-        if (!$checkAddress) {
+        if ( ! $checkAddress) {
             $checkAddress = '___________';
         }
 
