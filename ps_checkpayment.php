@@ -171,10 +171,11 @@ class Ps_Checkpayment extends PaymentModule
         }
 
         $state = $params['order']->getCurrentState();
+        $rest_to_paid = $params['order']->getOrdersTotalPaid() - $params['order']->getTotalPaid();
         if (in_array($state, array(Configuration::get('PS_OS_CHEQUE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID')))) {
             $this->smarty->assign(array(
                 'total_to_pay' => Tools::displayPrice(
-                    $params['order']->getOrdersTotalPaid(),
+                    $rest_to_paid,
                     new Currency($params['order']->id_currency),
                     false
                 ),
