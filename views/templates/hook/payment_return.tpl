@@ -29,7 +29,7 @@
 		{l s='Your check must include:' d='Modules.Checkpayment.Shop'}
 		<br /><br />- {l s='Payment amount.' d='Modules.Checkpayment.Shop'} <span class="price"><strong>{$total_to_pay}</strong></span>
 		<br /><br />- {l s='Payable to the order of' d='Modules.Checkpayment.Shop'} <strong>{if $checkName}{$checkName}{else}___________{/if}</strong>
-		<br /><br />- {l s='Mail to' d='Modules.Checkpayment.Shop'} <strong>{if $checkAddress}{$checkAddress}{else}___________{/if}</strong>
+		<br /><br />- {l s='Mail to' d='Modules.Checkpayment.Shop'} <strong>{if $checkAddress}{$checkAddress nofilter}{else}___________{/if}</strong>
 		{if !isset($reference)}
 			<br /><br />- {l s='Do not forget to insert your order number #%d.' sprintf=[$id_order] d='Modules.Checkpayment.Shop'}
 		{else}
