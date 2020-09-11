@@ -23,7 +23,6 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -32,7 +31,8 @@ function upgrade_module_2_5_8($module)
 {
     $hook_to_remove_id = Hook::getIdByName('advancedPaymentApi');
     if ($hook_to_remove_id) {
-        $module->unregisterHook((int)$hook_to_remove_id);
+        $module->unregisterHook((int) $hook_to_remove_id);
     }
+
     return true;
 }

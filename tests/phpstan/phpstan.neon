@@ -1,0 +1,20 @@
+includes:
+	- %currentWorkingDirectory%/vendor/prestashop/php-dev-tools/phpstan/ps-module-extension.neon
+
+parameters:
+  paths:
+    # From PHPStan 0.12, paths to check are relative to the neon file
+    - ../../ps_checkpayment.php
+    - ../../controllers/
+    - ../../upgrade/
+  ignoreErrors:
+    - '#Call to function is_array\(\) with Currency will always evaluate to false.#'
+    - '#Parameter \#1 \$id of class Currency constructor expects null, int given.#'
+    - '#Parameter \#1 \$id of class Customer constructor expects null, int given.#'
+    - '#Parameter \#4 \$ssl of method LinkCore::getModuleLink\(\) expects null, true given.#'
+    - '#Parameter \#7 \$currency_special of method PaymentModuleCore::validateOrder\(\) expects null, int given.#'
+    - '#Parameter \#9 \$secure_key of method PaymentModuleCore::validateOrder\(\) expects bool, string given.#'
+    ## On 1.7.1.0
+    - '#Call to method assign\(\) on an unknown class Smarty_Data#'
+  reportUnmatchedIgnoredErrors: false
+  level: 5
