@@ -1,28 +1,28 @@
 <?php
-/*
-* 2007-2015 PrestaShop
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@prestashop.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
-* versions in the future. If you wish to customize PrestaShop for your
-* needs please refer to http://www.prestashop.com for more information.
-*
-*  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2015 PrestaShop SA
-*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*  International Registered Trademark & Property of PrestaShop SA
-*/
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License 3.0 (AFL-3.0)
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+ * versions in the future. If you wish to customize PrestaShop for your
+ * needs please refer to https://devdocs.prestashop.com/ for more information.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
+ */
 
 use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
 
@@ -33,7 +33,7 @@ if (!defined('_PS_VERSION_')) {
 class Ps_Checkpayment extends PaymentModule
 {
     private $_html = '';
-    private $_postErrors = array();
+    private $_postErrors = [];
 
     public $checkName;
     public $address;
@@ -43,14 +43,14 @@ class Ps_Checkpayment extends PaymentModule
     {
         $this->name = 'ps_checkpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '2.0.4';
+        $this->version = '2.0.5';
         $this->author = 'PrestaShop';
-        $this->controllers = array('payment', 'validation');
+        $this->controllers = ['payment', 'validation'];
 
         $this->currencies = true;
         $this->currencies_mode = 'checkbox';
 
-        $config = Configuration::getMultiple(array('CHEQUE_NAME', 'CHEQUE_ADDRESS'));
+        $config = Configuration::getMultiple(['CHEQUE_NAME', 'CHEQUE_ADDRESS']);
         if (isset($config['CHEQUE_NAME'])) {
             $this->checkName = $config['CHEQUE_NAME'];
         }
@@ -61,23 +61,23 @@ class Ps_Checkpayment extends PaymentModule
         $this->bootstrap = true;
         parent::__construct();
 
-        $this->displayName = $this->trans('Payments by check', array(), 'Modules.Checkpayment.Admin');
-        $this->description = $this->trans('This module allows you to accept payments by check.', array(), 'Modules.Checkpayment.Admin');
-        $this->confirmUninstall = $this->trans('Are you sure you want to delete these details?', array(), 'Modules.Checkpayment.Admin');
-        $this->ps_versions_compliancy = array('min' => '1.7.1.0', 'max' => _PS_VERSION_);
+        $this->displayName = $this->trans('Payments by check', [], 'Modules.Checkpayment.Admin');
+        $this->description = $this->trans('This module allows you to accept payments by check.', [], 'Modules.Checkpayment.Admin');
+        $this->confirmUninstall = $this->trans('Are you sure you want to delete these details?', [], 'Modules.Checkpayment.Admin');
+        $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
 
         if ((!isset($this->checkName) || !isset($this->address) || empty($this->checkName) || empty($this->address))) {
-            $this->warning = $this->trans('The "Payee" and "Address" fields must be configured before using this module.', array(), 'Modules.Checkpayment.Admin');
+            $this->warning = $this->trans('The "Payee" and "Address" fields must be configured before using this module.', [], 'Modules.Checkpayment.Admin');
         }
         if (!count(Currency::checkPaymentCurrencies($this->id))) {
-            $this->warning = $this->trans('No currency has been set for this module.', array(), 'Modules.Checkpayment.Admin');
+            $this->warning = $this->trans('No currency has been set for this module.', [], 'Modules.Checkpayment.Admin');
         }
 
-        $this->extra_mail_vars = array(
+        $this->extra_mail_vars = [
                                     '{check_name}' => Configuration::get('CHEQUE_NAME'),
                                     '{check_address}' => Configuration::get('CHEQUE_ADDRESS'),
-                                    '{check_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS'))
-                                );
+                                    '{check_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS')),
+                                ];
     }
 
     public function install()
@@ -100,9 +100,9 @@ class Ps_Checkpayment extends PaymentModule
     {
         if (Tools::isSubmit('btnSubmit')) {
             if (!Tools::getValue('CHEQUE_NAME')) {
-                $this->_postErrors[] = $this->trans('The "Payee" field is required.', array(),'Modules.Checkpayment.Admin');
+                $this->_postErrors[] = $this->trans('The "Payee" field is required.', [], 'Modules.Checkpayment.Admin');
             } elseif (!Tools::getValue('CHEQUE_ADDRESS')) {
-                $this->_postErrors[] = $this->trans('The "Address" field is required.', array(), 'Modules.Checkpayment.Admin');
+                $this->_postErrors[] = $this->trans('The "Address" field is required.', [], 'Modules.Checkpayment.Admin');
             }
         }
     }
@@ -113,7 +113,7 @@ class Ps_Checkpayment extends PaymentModule
             Configuration::updateValue('CHEQUE_NAME', Tools::getValue('CHEQUE_NAME'));
             Configuration::updateValue('CHEQUE_ADDRESS', Tools::getValue('CHEQUE_ADDRESS'));
         }
-        $this->_html .= $this->displayConfirmation($this->trans('Settings updated', array(), 'Admin.Notifications.Success'));
+        $this->_html .= $this->displayConfirmation($this->trans('Settings updated', [], 'Admin.Notifications.Success'));
     }
 
     private function _displayCheck()
@@ -157,8 +157,8 @@ class Ps_Checkpayment extends PaymentModule
 
         $newOption = new PaymentOption();
         $newOption->setModuleName($this->name)
-                ->setCallToActionText($this->trans('Pay by Check', array(), 'Modules.Checkpayment.Admin'))
-                ->setAction($this->context->link->getModuleLink($this->name, 'validation', array(), true))
+                ->setCallToActionText($this->trans('Pay by Check', [], 'Modules.Checkpayment.Admin'))
+                ->setAction($this->context->link->getModuleLink($this->name, 'validation', [], true))
                 ->setAdditionalInformation($this->fetch('module:ps_checkpayment/views/templates/front/payment_infos.tpl'));
 
         return [$newOption];
@@ -171,10 +171,11 @@ class Ps_Checkpayment extends PaymentModule
         }
 
         $state = $params['order']->getCurrentState();
-        if (in_array($state, array(Configuration::get('PS_OS_CHEQUE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID')))) {
-            $this->smarty->assign(array(
+        $rest_to_paid = $params['order']->getOrdersTotalPaid() - $params['order']->getTotalPaid();
+        if (in_array($state, [Configuration::get('PS_OS_CHEQUE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID')])) {
+            $this->smarty->assign([
                 'total_to_pay' => Tools::displayPrice(
-                    $params['order']->getOrdersTotalPaid(),
+                    $rest_to_paid,
                     new Currency($params['order']->id_currency),
                     false
                 ),
@@ -182,21 +183,22 @@ class Ps_Checkpayment extends PaymentModule
                 'checkName' => $this->checkName,
                 'checkAddress' => Tools::nl2br($this->address),
                 'status' => 'ok',
-                'id_order' => $params['order']->id
-            ));
+                'id_order' => $params['order']->id,
+            ]);
             if (isset($params['order']->reference) && !empty($params['order']->reference)) {
                 $this->smarty->assign('reference', $params['order']->reference);
             }
         } else {
             $this->smarty->assign('status', 'failed');
         }
+
         return $this->fetch('module:ps_checkpayment/views/templates/hook/payment_return.tpl');
     }
 
     public function checkCurrency($cart)
     {
-        $currency_order = new Currency((int)($cart->id_currency));
-        $currencies_module = $this->getCurrency((int)$cart->id_currency);
+        $currency_order = new Currency((int) ($cart->id_currency));
+        $currencies_module = $this->getCurrency((int) $cart->id_currency);
 
         if (is_array($currencies_module)) {
             foreach ($currencies_module as $currency_module) {
@@ -205,60 +207,59 @@ class Ps_Checkpayment extends PaymentModule
                 }
             }
         }
+
         return false;
     }
 
     public function renderForm()
     {
-        $fields_form = array(
-            'form' => array(
-                'legend' => array(
-                    'title' => $this->trans('Contact details', array(), 'Modules.Checkpayment.Admin'),
-                    'icon' => 'icon-envelope'
-                ),
-                'input' => array(
-                    array(
+        $fields_form = [
+            'form' => [
+                'legend' => [
+                    'title' => $this->trans('Contact details', [], 'Modules.Checkpayment.Admin'),
+                    'icon' => 'icon-envelope',
+                ],
+                'input' => [
+                    [
                         'type' => 'text',
-                        'label' => $this->trans('Payee (name)', array(), 'Modules.Checkpayment.Admin'),
+                        'label' => $this->trans('Payee (name)', [], 'Modules.Checkpayment.Admin'),
                         'name' => 'CHEQUE_NAME',
-                        'required' => true
-                    ),
-                    array(
+                        'required' => true,
+                    ],
+                    [
                         'type' => 'textarea',
-                        'label' => $this->trans('Address', array(), 'Modules.Checkpayment.Admin'),
-                        'desc' => $this->trans('Address where the check should be sent to.', array(), 'Modules.Checkpayment.Admin'),
+                        'label' => $this->trans('Address', [], 'Modules.Checkpayment.Admin'),
+                        'desc' => $this->trans('Address where the check should be sent to.', [], 'Modules.Checkpayment.Admin'),
                         'name' => 'CHEQUE_ADDRESS',
-                        'required' => true
-                    ),
-                ),
-                'submit' => array(
-                    'title' => $this->trans('Save', array(), 'Admin.Actions'),
-                )
-            ),
-        );
+                        'required' => true,
+                    ],
+                ],
+                'submit' => [
+                    'title' => $this->trans('Save', [], 'Admin.Actions'),
+                ],
+            ],
+        ];
 
         $helper = new HelperForm();
         $helper->show_toolbar = false;
-        $helper->id = (int)Tools::getValue('id_carrier');
+        $helper->id = (int) Tools::getValue('id_carrier');
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'btnSubmit';
-        $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
+        $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false) . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
-        $helper->tpl_vars = array(
+        $helper->tpl_vars = [
             'fields_value' => $this->getConfigFieldsValues(),
-        );
+        ];
 
-        $this->fields_form = array();
-
-        return $helper->generateForm(array($fields_form));
+        return $helper->generateForm([$fields_form]);
     }
 
     public function getConfigFieldsValues()
     {
-        return array(
+        return [
             'CHEQUE_NAME' => Tools::getValue('CHEQUE_NAME', Configuration::get('CHEQUE_NAME')),
             'CHEQUE_ADDRESS' => Tools::getValue('CHEQUE_ADDRESS', Configuration::get('CHEQUE_ADDRESS')),
-        );
+        ];
     }
 
     public function getTemplateVars()
@@ -266,9 +267,9 @@ class Ps_Checkpayment extends PaymentModule
         $cart = $this->context->cart;
         $total = $this->trans(
             '%amount% (tax incl.)',
-            array(
+            [
                 '%amount%' => Tools::displayPrice($cart->getOrderTotal(true, Cart::BOTH)),
-            ),
+            ],
             'Modules.Checkpayment.Admin'
         );
 
