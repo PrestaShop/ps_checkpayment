@@ -2,7 +2,7 @@
 
 ## About
 
-This module allows you to accept payments by check.
+Display contact details blocks to make it easy for customers to pay by check on your store.
 
 ## Multistore compatibility
 
