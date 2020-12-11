@@ -16,5 +16,6 @@ parameters:
     - '#Parameter \#9 \$secure_key of method PaymentModuleCore::validateOrder\(\) expects bool, string given.#'
     ## On 1.7.1.0
     - '#Call to method assign\(\) on an unknown class Smarty_Data#'
+    - '~^Call to function is_array\(\) with Currency\|false will always evaluate to false\.$~'
   reportUnmatchedIgnoredErrors: false
   level: 5
