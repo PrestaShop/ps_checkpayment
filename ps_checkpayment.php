@@ -69,7 +69,7 @@ class Ps_Checkpayment extends PaymentModule
         if ((!isset($this->checkName) || !isset($this->address) || empty($this->checkName) || empty($this->address)) && 1 == $this->active) {
             $this->warning = $this->trans('The "Payee" and "Address" fields must be configured before using this module.', [], 'Modules.Checkpayment.Admin');
         }
-        if (!count(Currency::checkPaymentCurrencies($this->id))) {
+        if (!count(Currency::checkPaymentCurrencies($this->id)) && 1 == $this->active) {
             $this->warning = $this->trans('No currency has been set for this module.', [], 'Modules.Checkpayment.Admin');
         }
 
