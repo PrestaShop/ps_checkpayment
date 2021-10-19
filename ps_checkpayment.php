@@ -174,10 +174,9 @@ class Ps_Checkpayment extends PaymentModule
         $rest_to_paid = $params['order']->getOrdersTotalPaid() - $params['order']->getTotalPaid();
         if (in_array($state, [Configuration::get('PS_OS_CHEQUE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID')])) {
             $this->smarty->assign([
-                'total_to_pay' => Tools::displayPrice(
+                'total_to_pay' => $this->context->getCurrentLocale()->formatPrice(
                     $rest_to_paid,
-                    new Currency($params['order']->id_currency),
-                    false
+                    (new Currency($params['order']->id_currency))->iso_code
                 ),
                 'shop_name' => $this->context->shop->name,
                 'checkName' => $this->checkName,
@@ -268,7 +267,7 @@ class Ps_Checkpayment extends PaymentModule
         $total = $this->trans(
             '%amount% (tax incl.)',
             [
-                '%amount%' => Tools::displayPrice($cart->getOrderTotal(true, Cart::BOTH)),
+                '%amount%' => $this->context->getCurrentLocale()->formatPrice($cart->getOrderTotal(true, Cart::BOTH), $this->context->currency->iso_code),
             ],
             'Modules.Checkpayment.Admin'
         );
