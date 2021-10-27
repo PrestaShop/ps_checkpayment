@@ -64,7 +64,7 @@ class Ps_Checkpayment extends PaymentModule
         $this->displayName = $this->trans('Payments by check', [], 'Modules.Checkpayment.Admin');
         $this->description = $this->trans('Display contact details blocks to make it easy for customers to pay by check on your store.', [], 'Modules.Checkpayment.Admin');
         $this->confirmUninstall = $this->trans('Are you sure you want to delete these details?', [], 'Modules.Checkpayment.Admin');
-        $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
+        $this->ps_versions_compliancy = ['min' => '1.7.6.0', 'max' => _PS_VERSION_];
 
         if ((!isset($this->checkName) || !isset($this->address) || empty($this->checkName) || empty($this->address)) && $this->active) {
             $this->warning = $this->trans('The "Payee" and "Address" fields must be configured before using this module.', [], 'Modules.Checkpayment.Admin');
@@ -174,10 +174,9 @@ class Ps_Checkpayment extends PaymentModule
         $rest_to_paid = $params['order']->getOrdersTotalPaid() - $params['order']->getTotalPaid();
         if (in_array($state, [Configuration::get('PS_OS_CHEQUE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID')])) {
             $this->smarty->assign([
-                'total_to_pay' => Tools::displayPrice(
+                'total_to_pay' => $this->context->getCurrentLocale()->formatPrice(
                     $rest_to_paid,
-                    new Currency($params['order']->id_currency),
-                    false
+                    (new Currency($params['order']->id_currency))->iso_code
                 ),
                 'shop_name' => $this->context->shop->name,
                 'checkName' => $this->checkName,
@@ -268,7 +267,7 @@ class Ps_Checkpayment extends PaymentModule
         $total = $this->trans(
             '%amount% (tax incl.)',
             [
-                '%amount%' => Tools::displayPrice($cart->getOrderTotal(true, Cart::BOTH)),
+                '%amount%' => $this->context->getCurrentLocale()->formatPrice($cart->getOrderTotal(true, Cart::BOTH), $this->context->currency->iso_code),
             ],
             'Modules.Checkpayment.Admin'
         );
