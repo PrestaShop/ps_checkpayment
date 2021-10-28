@@ -264,7 +264,10 @@ class Ps_Checkpayment extends PaymentModule
     public function getTemplateVars()
     {
         $cart = $this->context->cart;
-        $total = $this->context->getCurrentLocale()->formatPrice($cart->getOrderTotal(true, Cart::BOTH));
+        $total = $this->context->getCurrentLocale()->formatPrice(
+            $cart->getOrderTotal(true, Cart::BOTH),
+            (new Currency($cart->id_currency))->iso_code
+        );
 
         $taxLabel = '';
         if ($this->context->country->display_tax_label) {
