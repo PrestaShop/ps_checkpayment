@@ -74,10 +74,10 @@ class Ps_Checkpayment extends PaymentModule
         }
 
         $this->extra_mail_vars = [
-                                    '{check_name}' => Configuration::get('CHEQUE_NAME'),
-                                    '{check_address}' => Configuration::get('CHEQUE_ADDRESS'),
-                                    '{check_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS')),
-                                ];
+            '{check_name}' => Configuration::get('CHEQUE_NAME'),
+            '{check_address}' => Configuration::get('CHEQUE_ADDRESS'),
+            '{check_address_html}' => Tools::nl2br(Configuration::get('CHEQUE_ADDRESS')),
+        ];
     }
 
     public function install()
@@ -157,9 +157,9 @@ class Ps_Checkpayment extends PaymentModule
 
         $newOption = new PaymentOption();
         $newOption->setModuleName($this->name)
-                ->setCallToActionText($this->trans('Pay by Check', [], 'Modules.Checkpayment.Admin'))
-                ->setAction($this->context->link->getModuleLink($this->name, 'validation', [], true))
-                ->setAdditionalInformation($this->fetch('module:ps_checkpayment/views/templates/front/payment_infos.tpl'));
+            ->setCallToActionText($this->trans('Pay by Check', [], 'Modules.Checkpayment.Admin'))
+            ->setAction($this->context->link->getModuleLink($this->name, 'validation', [], true))
+            ->setAdditionalInformation($this->fetch('module:ps_checkpayment/views/templates/front/payment_infos.tpl'));
 
         return [$newOption];
     }
@@ -264,13 +264,15 @@ class Ps_Checkpayment extends PaymentModule
     public function getTemplateVars()
     {
         $cart = $this->context->cart;
-        $total = $this->trans(
-            '%amount% (tax incl.)',
-            [
-                '%amount%' => $this->context->getCurrentLocale()->formatPrice($cart->getOrderTotal(true, Cart::BOTH), $this->context->currency->iso_code),
-            ],
-            'Modules.Checkpayment.Admin'
+        $total = $this->context->getCurrentLocale()->formatPrice(
+            $cart->getOrderTotal(true, Cart::BOTH),
+            (new Currency($cart->id_currency))->iso_code
         );
+
+        $taxLabel = '';
+        if ($this->context->country->display_tax_label) {
+            $taxLabel = $this->trans('(tax incl.)', [], 'Modules.Checkpayment.Admin');
+        }
 
         $checkOrder = Configuration::get('CHEQUE_NAME');
         if (!$checkOrder) {
@@ -284,6 +286,7 @@ class Ps_Checkpayment extends PaymentModule
 
         return [
             'checkTotal' => $total,
+            'checkTaxLabel' => $taxLabel,
             'checkOrder' => $checkOrder,
             'checkAddress' => $checkAddress,
         ];
