@@ -43,7 +43,7 @@ class Ps_Checkpayment extends PaymentModule
     {
         $this->name = 'ps_checkpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '2.0.5';
+        $this->version = '2.0.6';
         $this->author = 'PrestaShop';
         $this->controllers = ['payment', 'validation'];
 
@@ -84,7 +84,7 @@ class Ps_Checkpayment extends PaymentModule
     {
         return parent::install()
             && $this->registerHook('paymentOptions')
-            && $this->registerHook('paymentReturn')
+            && $this->registerHook('displayPaymentReturn')
         ;
     }
 
@@ -164,7 +164,7 @@ class Ps_Checkpayment extends PaymentModule
         return [$newOption];
     }
 
-    public function hookPaymentReturn($params)
+    public function hookDisplayPaymentReturn($params)
     {
         if (!$this->active) {
             return;
