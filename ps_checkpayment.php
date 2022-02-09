@@ -170,26 +170,20 @@ class Ps_Checkpayment extends PaymentModule
             return;
         }
 
-        $state = $params['order']->getCurrentState();
         $rest_to_paid = $params['order']->getOrdersTotalPaid() - $params['order']->getTotalPaid();
-        if (in_array($state, [Configuration::get('PS_OS_CHEQUE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID')])) {
-            $this->smarty->assign([
-                'total_to_pay' => $this->context->getCurrentLocale()->formatPrice(
-                    $rest_to_paid,
-                    (new Currency($params['order']->id_currency))->iso_code
-                ),
-                'shop_name' => $this->context->shop->name,
-                'checkName' => $this->checkName,
-                'checkAddress' => Tools::nl2br($this->address),
-                'status' => 'ok',
-                'id_order' => $params['order']->id,
-            ]);
-            if (isset($params['order']->reference) && !empty($params['order']->reference)) {
-                $this->smarty->assign('reference', $params['order']->reference);
-            }
-        } else {
-            $this->smarty->assign('status', 'failed');
-        }
+
+        $this->smarty->assign([
+            'total_to_pay' => $this->context->getCurrentLocale()->formatPrice(
+                $rest_to_paid,
+                (new Currency($params['order']->id_currency))->iso_code
+            ),
+            'shop_name' => $this->context->shop->name,
+            'checkName' => $this->checkName,
+            'checkAddress' => Tools::nl2br($this->address),
+            'status' => 'ok',
+            'id_order' => $params['order']->id,
+            'reference' => $params['order']->reference,
+        ]);
 
         return $this->fetch('module:ps_checkpayment/views/templates/hook/payment_return.tpl');
     }
