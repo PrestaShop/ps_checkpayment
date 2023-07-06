@@ -4,6 +4,10 @@
 
 Display contact details blocks to make it easy for customers to pay by check on your store.
 
+## Compatibility
+
+PrestaShop: `1.7.6.0` or later
+
 ## Multistore compatibility
 
 This module is compatible with the multistore :heavy_check_mark: <br/>
